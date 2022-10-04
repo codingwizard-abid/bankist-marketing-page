@@ -48,12 +48,10 @@ document.querySelector('.btn-close-cookie').addEventListener('click', function(e
 });
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('.section--1');
+const section1 = document.querySelector('#section--1');
 
 btnScrollTo.addEventListener('click', function(e){
-  const scroll1 = e.target.getBoundingClientRect();
-  console.log(scroll1);
-
-  console.log('current Map', scrollX, scrollY);
-  console.log('client Map', document.documentElement.clientHeight, document.documentElement.clientWidth);
+  console.log(e.target.getBoundingClientRect());
+  const scroll1 = section1.getBoundingClientRect();
+  window.scrollTo(scroll1.left + window.scrollX, scroll1.top + window.scrollY);
 })
