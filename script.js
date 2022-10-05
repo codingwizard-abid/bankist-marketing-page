@@ -51,7 +51,13 @@ const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
 btnScrollTo.addEventListener('click', function(e){
-  console.log(e.target.getBoundingClientRect());
+  //console.log(e.target.getBoundingClientRect());
   const scroll1 = section1.getBoundingClientRect();
-  window.scrollTo(scroll1.left + window.scrollX, scroll1.top + window.scrollY);
+  // window.scrollTo({
+  //   left: scroll1.left + window.scrollX,
+  //   top:scroll1.top + window.scrollY,
+  //   behavior: "smooth",
+  // });
+
+  section1.scrollIntoView({behavior: "smooth",})
 })
