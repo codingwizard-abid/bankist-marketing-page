@@ -9,6 +9,7 @@ const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".btn--close-modal");
 const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
+const nav = document.querySelector(".nav");
 
 const openModal = function (e) {
    e.preventDefault();
@@ -33,6 +34,14 @@ document.addEventListener("keydown", function (e) {
    }
 });
 
+// sticky header
+const initialsCoords = section1.getBoundingClientRect();
+window.addEventListener('scroll', function(){
+   if(window.scrollY > initialsCoords.top) nav.classList.add('sticky');
+   else nav.classList.remove('sticky');
+});
+
+// smooth scorlling
 btnScrollTo.addEventListener("click", function (e) {
    // console.log(e.target.getBoundingClientRect());
    // console.log('client height x/y', document.documentElement.clientHeight, document.documentElement.clientWidth);
@@ -56,16 +65,33 @@ btnScrollTo.addEventListener("click", function (e) {
 //    })
 // })
 
-document.querySelector(".nav__links").addEventListener("click", function(e){
+document.querySelector(".nav__links").addEventListener("click", function (e) {
    e.preventDefault();
    console.log(e.target);
-   if(e.target.classList.contains("nav__link")){
+   if (e.target.classList.contains("nav__link")) {
       console.log(e.target.href);
-      const id = e.target.getAttribute('href');
+      const id = e.target.getAttribute("href");
       document.querySelector(id).scrollIntoView({ behavior: "smooth" });
    }
 });
 
+// mouse handle 
+const handleHover = function(e, opacity){
+   if (e.target.classList.contains("nav__link")) {
+      const link = e.target;
+      const siblings = link.closest(".nav").querySelectorAll(".nav__link");
+      siblings.forEach(el => {
+         if (el !== link) el.style.opacity = opacity;
+      });
+   }
+}
+
+// menu opacity
+nav.addEventListener("mouseover", (e) => handleHover(e, 0.5));
+
+nav.addEventListener("mouseout", (e) => handleHover(e, 1));
+
+// header
 const message = document.createElement("div");
 message.classList.add("cookie-message");
 message.innerHTML = `We use cookies to improve functionality and analytics. <button class='btn btn-close-cookie'>Got it</button>`;
@@ -85,20 +111,23 @@ message.innerHTML = `We use cookies to improve functionality and analytics. <but
 
 // const highlights = document.querySelectorAll('.highlight');
 
+const tabs = document.querySelectorAll(".operations__tab");
+const tabContainer = document.querySelector(".operations__tab-container");
+const tabContents = document.querySelectorAll(".operations__content");
 
-const tabs = document.querySelectorAll('.operations__tab');
-const tabContainer = document.querySelector('.operations__tab-container');
-const tabContents = document.querySelectorAll('.operations__content');
-
-tabContainer.addEventListener('click', function(e){
-   const clicked = e.target.closest('.operations__tab');
+tabContainer.addEventListener("click", function (e) {
+   const clicked = e.target.closest(".operations__tab");
    console.log(clicked);
-   if(!clicked) return;
-   tabs.forEach(f => f.classList.remove('operations__tab--active'));
-   clicked.classList.add('operations__tab--active');
+   if (!clicked) return;
+   tabs.forEach((f) => f.classList.remove("operations__tab--active"));
+   clicked.classList.add("operations__tab--active");
 
    //others remove
-   tabContents.forEach(f => f.classList.remove('operations__content--active'));
+   tabContents.forEach((f) =>
+      f.classList.remove("operations__content--active")
+   );
    // content appearencs
-   document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
+   document
+      .querySelector(`.operations__content--${clicked.dataset.tab}`)
+      .classList.add("operations__content--active");
 });
