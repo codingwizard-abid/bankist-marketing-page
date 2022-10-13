@@ -35,11 +35,11 @@ document.addEventListener("keydown", function (e) {
 });
 
 // sticky header
-const initialsCoords = section1.getBoundingClientRect();
-window.addEventListener('scroll', function(){
-   if(window.scrollY > initialsCoords.top) nav.classList.add('sticky');
-   else nav.classList.remove('sticky');
-});
+// const initialsCoords = section1.getBoundingClientRect();
+// window.addEventListener("scroll", function () {
+//    if (window.scrollY > initialsCoords.top) nav.classList.add("sticky");
+//    else nav.classList.remove("sticky");
+// });
 
 // smooth scorlling
 btnScrollTo.addEventListener("click", function (e) {
@@ -75,16 +75,16 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
    }
 });
 
-// mouse handle 
-const handleHover = function(e, opacity){
+// mouse handle
+const handleHover = function (e, opacity) {
    if (e.target.classList.contains("nav__link")) {
       const link = e.target;
       const siblings = link.closest(".nav").querySelectorAll(".nav__link");
-      siblings.forEach(el => {
+      siblings.forEach((el) => {
          if (el !== link) el.style.opacity = opacity;
       });
    }
-}
+};
 
 // menu opacity
 nav.addEventListener("mouseover", (e) => handleHover(e, 0.5));
@@ -130,4 +130,37 @@ tabContainer.addEventListener("click", function (e) {
    document
       .querySelector(`.operations__content--${clicked.dataset.tab}`)
       .classList.add("operations__content--active");
+});
+
+// header navigation
+const stickyNav = function (entries) {
+   const [entry] = entries;
+   console.log(entry);
+   if (!entry.isIntersecting) nav.classList.add("sticky");
+   else nav.classList.remove("sticky");
+};
+
+const headerObs = new IntersectionObserver(stickyNav, {
+   root: null,
+   threshold: 0,
+});
+
+headerObs.observe(header);
+
+const allSections = document.querySelectorAll(".section");
+const revealSections = function (entries, observer) {
+   const [entry] = entries;
+   if(!entry.isIntersecting) return;
+   entry.target.classList.remove('section--hidden');
+   observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSections, {
+   root:null,
+   threshold:0.15
+});
+
+allSections.forEach((section) => {
+   sectionObserver.observe(section);
+   section.classList.add('section--hidden');
 });
